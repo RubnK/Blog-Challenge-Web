@@ -2,8 +2,6 @@
 
 namespace App\Controllers;
 
-use App\Models\Post;
-
 class MainController
 {
     /**
@@ -11,8 +9,6 @@ class MainController
      */
     public function accueil()
     {
-        $articlesModel = new Post();
-        $topArticles = $articlesModel->getTopArticles();
         $this->show('accueil');
     }
 
