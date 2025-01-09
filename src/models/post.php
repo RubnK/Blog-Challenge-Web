@@ -24,6 +24,12 @@ class Post {
         return $db->query($sql, [$id]);
     }
 
+    function getArticlesByUser($id) {
+        $db = new Database();
+        $sql = "SELECT * FROM articles WHERE user_id = ?";
+        return $db->query($sql, [$id]);
+    }
+
     function getAllArticles() {
         $db = new Database();
         $sql = "SELECT * FROM articles";
