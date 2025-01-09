@@ -16,8 +16,8 @@ class Users {
 
     function getUser($id) {
         $db = new Database();
-        $sql = "SELECT * FROM users WHERE user_id = ?";
-        return $db->queryOne($sql, [$id]);
+        $sql = "SELECT * FROM users WHERE user_id = :id";
+        return $db->queryOne($sql, ['id' => $id]);
     }
 
     function getAllUsers() {
@@ -40,13 +40,19 @@ class Users {
 
     function deleteUser($id) {
         $db = new Database();
-        $sql = "DELETE FROM users WHERE user_id = ?";
-        return $db->executeSql($sql, [$id]);
+        $sql = "DELETE FROM users WHERE user_id = :id";
+        return $db->executeSql($sql, []);
     }
 
     function login($identifier, $password) {
         $db = new Database();
         $sql = "SELECT * FROM users WHERE email = :identifier AND password = :password OR username = :identifier AND password = :password";
         return $db->queryOne($sql, ['identifier' => $identifier, 'password' => $password]);
+    }
+
+    function userExists($identifier) {
+        $db = new Database();
+        $sql = "SELECT * FROM users WHERE email = :identifier OR username = :identifier";
+        return $db->queryOne($sql, ['identifier' => $identifier]);
     }
 }
