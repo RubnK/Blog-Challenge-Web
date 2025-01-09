@@ -2,29 +2,24 @@
 
 namespace App\Controllers;
 
-class MainController
+use App\Models\Category;
+use App\Models\Post;
+use App\Models\Users;
+
+class MainController extends CoreController
 {
     /**
      * Affiche la page d'accueil du site
      */
     public function accueil()
     {
-        $this->show('accueil');
-    }
-
-    /**
-     * Show legal mentions page
-     */
-    public function legalMentions()
-    {
-        // Affiche la vue dans le dossier views
-        $this->show('mentions');
-    }
-
-    public function show($viewName, $viewData = [])
-    {
-        require_once __DIR__ . "/../view/partial/header.php";
-        require_once __DIR__ . "/../view/$viewName.php";
-        require_once __DIR__ . "/../view/partial/footer.php";
-    }
+        if (isset($_SESSION['user']['id'])) {
+            $usersModel = new Users();
+            $user = $usersModel->getUser($_SESSION['user']['id']);
+            $this->show('accueil', ['user' => $user]);
+        }
+        else {
+            $this->show('accueil');
+        }
+    }    
 }
