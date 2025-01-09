@@ -16,7 +16,7 @@ class Users {
 
     function getUser($id) {
         $db = new Database();
-        $sql = "SELECT * FROM users WHERE id = ?";
+        $sql = "SELECT * FROM users WHERE user_id = ?";
         return $db->queryOne($sql, [$id]);
     }
 
@@ -34,13 +34,13 @@ class Users {
 
     function updateUser($id, $username, $email, $password) {
         $db = new Database();
-        $sql = "UPDATE users SET username = ?; email = ?, password = ? WHERE id = ?";
+        $sql = "UPDATE users SET username = ?; email = ?, password = ? WHERE user_id = ?";
         return $db->executeSql($sql, [$username, $email, $password, $id]);
     }
 
     function deleteUser($id) {
         $db = new Database();
-        $sql = "DELETE FROM users WHERE id = ?";
+        $sql = "DELETE FROM users WHERE user_id = ?";
         return $db->executeSql($sql, [$id]);
     }
 
