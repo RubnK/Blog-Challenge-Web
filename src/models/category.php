@@ -23,22 +23,4 @@ class Category {
         $sql = "SELECT * FROM categories";
         return $db->query($sql);
     }
-
-    function createCategory($name) {
-        $db = new Database();
-        $sql = "INSERT INTO categories (name) VALUES (?)";
-        return $db->executeSql($sql, [$name]);
-    }
-
-    function updateCategory($id, $name) {
-        $db = new Database();
-        $sql = "UPDATE categories SET name = ? WHERE category_id = ?";
-        return $db->executeSql($sql, [$name, $id]);
-    }
-
-    function deleteCategory($id) {
-        $db = new Database();
-        $sql = "DELETE FROM categories WHERE category_id = ?";
-        return $db->executeSql($sql, [$id]);
-    }
 }
