@@ -13,13 +13,8 @@ class MainController extends CoreController
      */
     public function accueil()
     {
-        if (isset($_SESSION['user']['id'])) {
-            $usersModel = new Users();
-            $user = $usersModel->getUser($_SESSION['user']['id']);
-            $this->show('accueil', ['user' => $user]);
-        }
-        else {
-            $this->show('accueil');
-        }
+        $articlesModel = new Post();
+        $articles = $articlesModel->getAllArticles();
+        $this->show('accueil', ['articles' => $articles]);
     }    
 }
