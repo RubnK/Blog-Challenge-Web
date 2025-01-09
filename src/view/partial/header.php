@@ -7,16 +7,16 @@
 </head>
 <body>
     <header>
-        <div class="logo">Nom du Blog</div>
+        <a href="/"><div class="logo">BlogEfrei</div></a>
         <div class="actions">
-            <a href="#">Publier</a>
-            <a href="#">Se connecter</a>
+            <a href="/post">Publier</a>
+            <a href="/login">Se connecter</a>
         </div>
     </header>
     <nav>
         <?php 
         foreach ($viewData['categories'] as $category) {
-            echo '<a href="/category.php?id='.$category['category_id'].'">'.$category['name'].'</a>';
+            echo '<a href="/category?id='.$category['category_id'].'">'.$category['name'].'</a>';
         }
         ?>
     </nav>
