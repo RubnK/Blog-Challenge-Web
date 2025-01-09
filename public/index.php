@@ -31,6 +31,9 @@ switch ($path) {
     case '/post':
         $ArticleController->post();
         break;
+    case '/article':
+        $ArticleController->article();
+        break;
     default:
         http_response_code(404);
         echo "Page not found";

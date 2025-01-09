@@ -14,7 +14,7 @@ class Post {
 
     function getArticle($id) {
         $db = new Database();
-        $sql = "SELECT * FROM articles WHERE id = ?";
+        $sql = "SELECT * FROM articles WHERE article_id = ?";
         return $db->queryOne($sql, [$id]);
     }
 
@@ -44,7 +44,7 @@ class Post {
 
     function deleteArticle($id) {
         $db = new Database();
-        $sql = "DELETE FROM articles WHERE id = ?";
+        $sql = "DELETE FROM articles WHERE article_id = ?";
         return $db->executeSql($sql, [$id]);
     }
 
@@ -62,7 +62,7 @@ class Post {
 
     function deleteComment($id) {
         $db = new Database();
-        $sql = "DELETE FROM comments WHERE id = ?";
+        $sql = "DELETE FROM comments WHERE article_id = ?";
         return $db->executeSql($sql, [$id]);
     }
 

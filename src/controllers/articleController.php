@@ -8,8 +8,12 @@ use App\Models\Users;
 
 class ArticleController extends CoreController
 {
-    public function article($id)
+    public function article()
     {
+        if(!isset($_GET['id'])) {
+            $this->redirectToRoute('/');
+        }
+        $id = $_GET['id'];
         $postModel = new Post();
 
         // Fetch article data from the database based on $id

@@ -13,13 +13,15 @@ class MainController extends CoreController
      */
     public function accueil()
     {
-        if (isset($_SESSION['user']['id'])) {
-            $usersModel = new Users();
-            $user = $usersModel->getUser($_SESSION['user']['id']);
-            $this->show('accueil', ['user' => $user]);
+        $postModel = new Post();
+        $posts = $postModel->getAllArticles();
+        foreach ($posts as $key => $post) {
+            $posts[$key]['likes'] = $postModel->getArticleLikesCount($post['article_id'])['count'];
         }
-        else {
-            $this->show('accueil');
-        }
+        usort($posts, function($a, $b) {
+            return $b['likes'] <=> $a['likes'];
+        });
+        $posts = array_slice($posts, 0, 6);
+        $this->show('accueil', ['articles' => $posts]);
     }    
 }
