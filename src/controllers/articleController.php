@@ -10,10 +10,10 @@ class ArticleController extends CoreController
 {
     public function article()
     {
-        if(!isset($_GET['id'])) {
+        if(!isset($_GET['article_id'])) {
             $this->redirectToRoute('/');
         }
-        $id = $_GET['id'];
+        $id = $_GET['article_id'];
         $postModel = new Post();
 
         // Fetch article data from the database based on $id
