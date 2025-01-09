@@ -20,6 +20,15 @@ The codebase utilizes PHP for backend logic and CSS for styling.
     ```sh
     composer install
     ```
+    
+## Database Setup
+
+1. Create a PostgreSQL database named `blog`:
+    ```sql
+    CREATE DATABASE blog;
+    ```
+
+2. Insert the `bdd.sql` file in the `blog` database
 
 ## Running the Application
 
