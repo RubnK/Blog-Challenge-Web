@@ -89,4 +89,28 @@ class Post {
         $sql = "SELECT articles.article_id, articles.title, (SELECT COUNT(*) FROM comments WHERE comments.article_id = articles.article_id) + (SELECT COUNT(*) FROM likes WHERE likes.article_id = articles.article_id) as interactions_count FROM articles ORDER BY interactions_count DESC LIMIT 6";
         return $db->query($sql);
     }
+
+    function likeArticle($id) {
+        $db = new Database();
+        $sql = "INSERT INTO likes (article_id) VALUES (?)";
+        return $db->executeSql($sql, [$id]);
+    }
+
+    function unlikeArticle($id) {
+        $db = new Database();
+        $sql = "DELETE FROM likes WHERE article_id = ?";
+        return $db->executeSql($sql, [$id]);
+    }
+
+    function getArticleLikesCount($id) {
+        $db = new Database();
+        $sql = "SELECT COUNT(*) FROM likes WHERE article_id = ?";
+        return $db->queryOne($sql, [$id]);
+    }
+
+    function getArticleLikes($id) {
+        $db = new Database();
+        $sql = "SELECT * FROM likes WHERE article_id = ?";
+        return $db->query($sql, [$id]);
+    }
 }
