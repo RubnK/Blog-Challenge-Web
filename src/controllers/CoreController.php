@@ -8,6 +8,9 @@ use App\Models\Users;
 class CoreController{
     public function show($viewName, $viewData = [])
     {
+        $categoryModel = new Category();
+        $categories = $categoryModel->getAllCategories();
+        $viewData['categories'] = $categories;
         require_once __DIR__ . "/../view/partial/header.php";
         require_once __DIR__ . "/../view/$viewName.php";
         require_once __DIR__ . "/../view/partial/footer.php";
