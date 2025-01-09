@@ -18,9 +18,11 @@ class UsersController extends CoreController
         else {
             $this->redirectToRoute('login');
         }
+        $postModels = new Post();
+        $userArticles = $postModels->getArticlesByUser($id);
         $usersModel = new Users();
         $user = $usersModel->getUser($id);
-        $this->show('profil', ['user' => $user]);
+        $this->show('profil', ['user' => $user, 'userArticles' => $userArticles]);
     }
 
     public function create()

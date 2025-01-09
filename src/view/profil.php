@@ -1,34 +1,3 @@
-<?php
-$host = 'localhost';
-$dbname = 'blog';
-$user = 'postgres'; // Remplacez par votre nom d'utilisateur
-$pass = 'cactus4705'; // Remplacez par votre mot de passe
-
-// Créer une connexion à la base de données
-try {
-    $pdo = new PDO("pgsql:host=$host;dbname=$dbname", $user, $pass);
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-} catch (PDOException $e) {
-    echo "Erreur de connexion : " . $e->getMessage();
-    exit();
-}
-
-// Supposons que l'utilisateur est connecté et que vous avez son ID
-$userId = 1; // Remplacez par l'ID de l'utilisateur connecté
-
-// Récupérer les articles publiés par l'utilisateur
-$query = "SELECT a.title, a.content, a.image, a.created_at 
-          FROM articles a
-          JOIN users u ON a.user_id = u.user_id
-          WHERE u.user_id = :user_id";
-$stmt = $pdo->prepare($query);
-$stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-$stmt->execute();
-
-// Récupérer les résultats
-$articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
-
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -100,17 +69,18 @@ $articles = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="info">
             <h1>Nom utilisateur</h1>
             <p>Inscrit le : date d'inscription</p>
+            <?= $viewData['user']['email'] ?>
         </div>
         <button>Modifier le profil</button>
     </div>
 
     <div class="articles">
         <h2>Articles publiés</h2>
-        <?php foreach ($articles as $article): ?>
+        <?php foreach ($viewData['userArticles'] as $article): ?>
             <div class="article">
                 <img src="path/to/article-thumbnail.jpg" alt="Image">
                 <div class="content">
-                    <h3><?= htmlspecialchars($article['title']) ?></h3>
+                    <h3><?= $article['title'] ?></h3>
                     <p><?= htmlspecialchars($article['content']) ?></p>
                     <p><small>Publié le : <?= htmlspecialchars($article['created_at']) ?></small></p>
                 </div>
