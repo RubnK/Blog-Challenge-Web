@@ -30,16 +30,10 @@ class Post {
         return $db->query($sql);
     }
 
-    function createArticle($title, $content) {
+    function createArticle($title, $content, $image) {
         $db = new Database();
-        $sql = "INSERT INTO articles (title, content) VALUES (?, ?)";
-        return $db->executeSql($sql, [$title, $content]);
-    }
-
-    function updateArticle($id, $title, $content) {
-        $db = new Database();
-        $sql = "UPDATE articles SET title = ?, content = ? WHERE id = ?";
-        return $db->executeSql($sql, [$title, $content, $id]);
+        $sql = "INSERT INTO articles (title, content, image) VALUES (?, ?, ?)";
+        return $db->executeSql($sql, [$title, $content, $image]);
     }
 
     function deleteArticle($id) {
@@ -60,12 +54,6 @@ class Post {
         return $db->executeSql($sql, [$article_id, $author, $content]);
     }
 
-    function updateComment($id, $author, $content) {
-        $db = new Database();
-        $sql = "UPDATE comments SET author = ?, content = ? WHERE id = ?";
-        return $db->executeSql($sql, [$author, $content, $id]);
-    }
-
     function deleteComment($id) {
         $db = new Database();
         $sql = "DELETE FROM comments WHERE id = ?";
@@ -78,15 +66,33 @@ class Post {
         return $db->query($sql, [$id]);
     }
 
-    function getArticleCommentsCount($id) {
+    function getTopArticles() {
         $db = new Database();
-        $sql = "SELECT COUNT(*) FROM comments WHERE article_id = ?";
+        $sql = "SELECT articles.article_id, (SELECT COUNT(*) FROM comments WHERE comments.article_id = articles.article_id) + (SELECT COUNT(*) FROM likes WHERE likes.article_id = articles.article_id) as interactions_count FROM articles ORDER BY interactions_count DESC LIMIT 6";
+        return $db->query($sql);
+    }
+
+    function likeArticle($id) {
+        $db = new Database();
+        $sql = "INSERT INTO likes (article_id) VALUES (?)";
+        return $db->executeSql($sql, [$id]);
+    }
+
+    function unlikeArticle($id) {
+        $db = new Database();
+        $sql = "DELETE FROM likes WHERE article_id = ?";
+        return $db->executeSql($sql, [$id]);
+    }
+
+    function getArticleLikesCount($id) {
+        $db = new Database();
+        $sql = "SELECT COUNT(*) FROM likes WHERE article_id = ?";
         return $db->queryOne($sql, [$id]);
     }
 
-    function getTopArticles() {
+    function getArticleLikes($id) {
         $db = new Database();
-        $sql = "SELECT articles.article_id, articles.title, (SELECT COUNT(*) FROM comments WHERE comments.article_id = articles.article_id) + (SELECT COUNT(*) FROM likes WHERE likes.article_id = articles.article_id) as interactions_count FROM articles ORDER BY interactions_count DESC LIMIT 6";
-        return $db->query($sql);
+        $sql = "SELECT * FROM likes WHERE article_id = ?";
+        return $db->query($sql, [$id]);
     }
 }
