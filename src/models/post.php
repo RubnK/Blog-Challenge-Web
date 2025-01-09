@@ -30,10 +30,10 @@ class Post {
         return $db->query($sql);
     }
 
-    function createArticle($title, $content, $image) {
+    function createArticle($title, $content, $author, $image, $category) {
         $db = new Database();
-        $sql = "INSERT INTO articles (title, content, image) VALUES (?, ?, ?)";
-        return $db->executeSql($sql, [$title, $content, $image]);
+        $sql = "INSERT INTO articles (title, content, user_id, image, category_id) VALUES (?, ?, ?, ?, ?)";
+        return $db->executeSql($sql, [$title, $content, $author, $image, $category]);
     }
 
     function deleteArticle($id) {
