@@ -16,8 +16,8 @@ class Users {
 
     function getUser($id) {
         $db = new Database();
-        $sql = "SELECT * FROM users WHERE id = ?";
-        return $db->queryOne($sql, [$id]);
+        $sql = "SELECT * FROM users WHERE user_id = :id";
+        return $db->queryOne($sql, ['id' => $id]);
     }
 
     function getAllUsers() {
@@ -26,21 +26,33 @@ class Users {
         return $db->query($sql);
     }
 
-    function createUser($email, $password, $role) {
+    function createUser($username, $email, $password) {
         $db = new Database();
-        $sql = "INSERT INTO users (email, password, role) VALUES (?, ?, ?)";
-        return $db->executeSql($sql, [$email, $password, $role]);
+        $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+        return $db->executeSql($sql, [$username, $email, $password]);
     }
 
-    function updateUser($id, $email, $password, $role) {
+    function updateUser($id, $username, $email, $password) {
         $db = new Database();
-        $sql = "UPDATE users SET email = ?, password = ?, role = ? WHERE id = ?";
-        return $db->executeSql($sql, [$email, $password, $role, $id]);
+        $sql = "UPDATE users SET username = ?; email = ?, password = ? WHERE user_id = ?";
+        return $db->executeSql($sql, [$username, $email, $password, $id]);
     }
 
     function deleteUser($id) {
         $db = new Database();
-        $sql = "DELETE FROM users WHERE id = ?";
-        return $db->executeSql($sql, [$id]);
+        $sql = "DELETE FROM users WHERE user_id = :id";
+        return $db->executeSql($sql, []);
+    }
+
+    function login($identifier, $password) {
+        $db = new Database();
+        $sql = "SELECT * FROM users WHERE email = :identifier AND password = :password OR username = :identifier AND password = :password";
+        return $db->queryOne($sql, ['identifier' => $identifier, 'password' => $password]);
+    }
+
+    function userExists($identifier) {
+        $db = new Database();
+        $sql = "SELECT * FROM users WHERE email = :identifier OR username = :identifier";
+        return $db->queryOne($sql, ['identifier' => $identifier]);
     }
 }
