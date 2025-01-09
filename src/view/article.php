@@ -13,6 +13,13 @@ try {
     exit;
 }
 
+// Démarrage de la session
+session_start();
+
+// Vérification si l'utilisateur est connecté
+$isLoggedIn = isset($_SESSION['user_id']);
+$currentUserId = $isLoggedIn ? $_SESSION['user_id'] : null;
+
 // Récupérer les articles depuis la base de données
 $articlesQuery = "SELECT a.article_id, a.title, a.content, a.created_at, u.username, a.image 
                   FROM articles a
@@ -34,15 +41,20 @@ $commentsQuery = "SELECT c.comment_id, c.content, c.created_at, u.username
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Publication</title>
-  <link rel="stylesheet" href="style.css">
+  <!-- <link rel="stylesheet" href="../css/style.css"> -->
+
 </head>
 <body>
   <div class="container">
+    <?php if (!$isLoggedIn): ?>
+      <p><a href="login.php">Connectez-vous</a> ou <a href="sing_in.php">inscrivez-vous</a> pour interagir avec les articles.</p>
+    <?php endif; ?>
+
     <?php foreach ($articles as $article): ?>
     <div class="post" id="post-<?php echo $article['article_id']; ?>">
       <div class="header">
         <div class="profile">
-          <div class="profile-pic" id="profile-pic"></div>
+          <div class="profile-pic"></div>
           <span class="username"><?php echo htmlspecialchars($article['username']); ?></span>
         </div>
       </div>
@@ -52,17 +64,17 @@ $commentsQuery = "SELECT c.comment_id, c.content, c.created_at, u.username
         <h1><?php echo htmlspecialchars($article['title']); ?></h1>
         <i class="meta">Publié le <?php echo date("d F Y", strtotime($article['created_at'])); ?></i>
         <p class="content"><?php echo nl2br(htmlspecialchars($article['content'])); ?></p>
-
-        <!-- Bouton de suppression (si l'utilisateur est le propriétaire de l'article) -->
-        <button class="delete-post-btn">🗑️</button>
       </div>
 
       <!-- Boutons d'interaction -->
       <div class="action">
-        <button class="like-btn" data-article-id="<?php echo $article['article_id']; ?>">🤍</button>
-        <span class="like-animation">❤️</span>
-        <button class="comment-btn">💬</button>
-        <button class="share-btn">🔗</button>
+        <?php if ($isLoggedIn): ?>
+          <button class="like-btn" data-article-id="<?php echo $article['article_id']; ?>">🤍</button>
+          <span class="like-animation">❤️</span>
+          <button class="comment-btn">💬</button>
+        <?php else: ?>
+          <p><a href="login_reister.php">Inscrivez-vous</a> pour interagir.</p>
+        <?php endif; ?>
       </div>
 
       <h2>Commentaires</h2>
@@ -74,32 +86,35 @@ $commentsQuery = "SELECT c.comment_id, c.content, c.created_at, u.username
           foreach ($comments as $comment):
         ?>
         <div class="comment">
-          <div class="profile-pic" style="background-color: #FFAA00;"></div>
           <span class="comment-author"><?php echo htmlspecialchars($comment['username']); ?> :</span>
           <span class="comment-text"><?php echo htmlspecialchars($comment['content']); ?></span>
-          <div class="actions">
-            <button class="reply-btn">Répondre</button>
-          </div>
         </div>
         <?php endforeach; ?>
       </div>
 
       <!-- Formulaire pour ajouter un commentaire -->
       <div class="comment-box">
-        <textarea id="comment-text-<?php echo $article['article_id']; ?>" placeholder="Écrire votre commentaire..."></textarea>
-        <button class="submit-comment" data-article-id="<?php echo $article['article_id']; ?>">Publier</button>
+        <?php if ($isLoggedIn): ?>
+          <textarea id="comment-text-<?php echo $article['article_id']; ?>" placeholder="Écrire votre commentaire..."></textarea>
+          <button class="submit-comment" data-article-id="<?php echo $article['article_id']; ?>">Publier</button>
+        <?php else: ?>
+          <p><a href="login_reister.php">Inscrivez-vous</a> pour commenter.</p>
+        <?php endif; ?>
       </div>
-
     </div>
     <?php endforeach; ?>
   </div>
 
   <script>
-    // Gestion des interactions de la publication (Like, Commentaire)
     document.addEventListener('click', function (e) {
       // Like
       if (e.target.classList.contains('like-btn')) {
         const articleId = e.target.getAttribute('data-article-id');
+        if (!<?php echo json_encode($isLoggedIn); ?>) {
+          alert('Vous devez être connecté pour aimer un article.');
+          return;
+        }
+
         const likeButton = e.target;
         likeButton.classList.toggle('liked');
         likeButton.textContent = likeButton.classList.contains('liked') ? '❤️' : '🤍';
@@ -118,27 +133,29 @@ $commentsQuery = "SELECT c.comment_id, c.content, c.created_at, u.username
       if (e.target.classList.contains('submit-comment')) {
         const articleId = e.target.getAttribute('data-article-id');
         const commentText = document.getElementById('comment-text-' + articleId).value.trim();
-        if (commentText) {
-          fetch('comment_article.php', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ article_id: articleId, content: commentText })
-          })
-          .then(response => response.json())
-          .then(data => {
+        if (!commentText) return;
+
+        fetch('comment_article.php', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ article_id: articleId, content: commentText })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            alert(data.error);
+          } else {
             const newComment = document.createElement('div');
             newComment.className = 'comment';
-            newComment.innerHTML = `<div class="profile-pic" style="background-color: #77DD77;"></div>
-                                    <span class="comment-author">Vous :</span>
-                                    <span class="comment-text">${data.content}</span>
-                                    <div class="actions">
-                                      <button class="reply-btn">Répondre</button>
-                                    </div>`;
+            newComment.innerHTML = `
+              <span class="comment-author">Vous :</span>
+              <span class="comment-text">${data.content}</span>
+            `;
             document.querySelector(`#post-${articleId} .comments-section`).appendChild(newComment);
-          });
-        }
+          }
+        });
       }
     });
   </script>
