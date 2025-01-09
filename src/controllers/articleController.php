@@ -22,17 +22,36 @@ class ArticleController extends CoreController
         $this->show('article', ['article' => $articleData, 'comments' => $commentsData]);
     }
 
-    public function create()
+    public function post()
     {
-        $title = htmlspecialchars($_POST['title']);
-        $content = htmlspecialchars($_POST['content']);
-        $category = htmlspecialchars($_POST['category']);
-        $author = $_SESSION['id'];
+        if (isset($_POST['title']) && isset($_POST['content'])) {
+            $title = htmlspecialchars($_POST['title']);
+            $content = htmlspecialchars($_POST['content']);
+            $category = htmlspecialchars($_POST['category']);
+            $author = $_SESSION['user']['id'];
+            $image = $_FILES['image'];
 
-        $postModel = new Post();
-        $postModel->createArticle($title, $content, $category, $author);
+            if ($image['error'] === UPLOAD_ERR_OK) {
+                $uploadDir = __DIR__ . '/../../public/uploads/';
+                $imagePath = $uploadDir . basename($image['name']);
 
-        $this->redirectToRoute('/');
+                // Vérification et déplacement de l'image
+                if (move_uploaded_file($image['tmp_name'], $imagePath)) {
+                    $relativePath = '/../../public/uploads/' . basename($image['name']);
+                } else {
+                    throw new \Exception("Erreur lors de l'upload de l'image");
+                }
+            } else {
+                throw new \Exception("Aucune image sélectionnée ou erreur d'upload");
+            }
+            $postModel = new Post();
+            $postModel->createArticle($title, $content, $author, basename($image['name']), $category);
+
+            $this->redirectToRoute('/');
+        }
+        $categoryModel = new Category();
+        $categories = $categoryModel->getAllCategories();
+        $this->show('post', ['categories' => $categories]);
     }
 
     public function delete()
