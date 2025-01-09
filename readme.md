@@ -1,5 +1,7 @@
 # Blog Challenge Web
 
+**Authors : [@RubnK](https://github.com/RubnK), [@yayou05](https://github.com/yayou05), [@len233](https://github.com/len233), [@skuullking](https://github.com/skuullking)**
+
 This project is a PHP-based web blog application that allows users to:
 
 - Register and login
@@ -7,6 +9,14 @@ This project is a PHP-based web blog application that allows users to:
 - Browse posts from other users
 
 The codebase utilizes PHP for backend logic and CSS for styling.
+
+## Table of content
+
+- [Installation](#installation)
+- [Database Setup](#database-setup)
+- [Running the application](#running-the-application)
+- [Directory Structure](#directory-structure)
+- [License](#license)
 
 ## Installation
 
@@ -39,7 +49,7 @@ php -S localhost:5001 -t public
 
 Visit `http://localhost:5001` in your web browser to see the application.
 
-# Directory Structure
+## Directory Structure
 
 - `public/` : Contains the entry point of the application.
 - `src/` : Contains the source code of the application.
