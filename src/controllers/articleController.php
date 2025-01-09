@@ -24,6 +24,9 @@ class ArticleController extends CoreController
 
     public function post()
     {
+        if (!isset($_SESSION['user'])) {
+            $this->redirectToRoute('login');
+        }
         if (isset($_POST['title']) && isset($_POST['content'])) {
             $title = htmlspecialchars($_POST['title']);
             $content = htmlspecialchars($_POST['content']);

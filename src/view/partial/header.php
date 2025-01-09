@@ -9,14 +9,22 @@
     <header>
         <a href="/"><div class="logo">BlogEfrei</div></a>
         <div class="actions">
-            <a href="/post">Publier</a>
-            <a href="/login">Se connecter</a>
+            <?php
+            if(isset($_SESSION['user'])) {
+                echo '<a href="/post">Publier</a>';
+                echo '<a href="/profil">Profil</a>';
+                echo '<a href="/logout">Se déconnecter</a>';
+            }
+            else {
+                echo '<a href="/login">Se connecter</a>';
+            }
+            ?>
         </div>
     </header>
     <nav>
         <?php 
         foreach ($viewData['categories'] as $category) {
-            echo '<a href="/category?id='.$category['category_id'].'">'.$category['name'].'</a>';
+            echo '<a href="/category?id='.$category['category_id'].'">'.$category['name'].' </a>';
         }
         ?>
     </nav>

@@ -1,3 +1,4 @@
+<h1>Inscription</h1>
 <form id = "register-form" method = "POST" class = "active">
     <input type = "text" name = "username" placeholder = "Nom d'utilisateur" required>
     <input type = "email" name = "email" placeholder = "Adresse e-mail" required>

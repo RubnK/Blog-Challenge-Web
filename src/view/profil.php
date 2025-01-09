@@ -78,7 +78,7 @@
         <h2>Articles publiés</h2>
         <?php foreach ($viewData['userArticles'] as $article): ?>
             <div class="article">
-                <img src="path/to/article-thumbnail.jpg" alt="Image">
+                <img src="/uploads/<?= $article['image'] ?>" alt="Image de l'article">
                 <div class="content">
                     <h3><?= $article['title'] ?></h3>
                     <p><?= htmlspecialchars($article['content']) ?></p>
