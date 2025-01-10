@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="/css/style.css">
     <title>BlogEfrei</title>
     <?php
-    if($_SERVER['REQUEST_URI'] == '/login' || $_SERVER['REQUEST_URI'] == '/register' || $_SERVER['REQUEST_URI'] == '/profil' || $_SERVER['REQUEST_URI'] == '/post') {
+    if($_SERVER['REQUEST_URI'] == '/login' || $_SERVER['REQUEST_URI'] == '/register' || substr($_SERVER['REQUEST_URI'], 0, 7) == '/profil' || $_SERVER['REQUEST_URI'] == '/post') {
         echo '<link rel="stylesheet" href="/css/users.css">';
     }
     if($_SERVER['REQUEST_URI'] == '/article' || $_SERVER['REQUEST_URI'] == '/post') {

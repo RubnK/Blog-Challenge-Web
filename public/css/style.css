@@ -170,6 +170,15 @@ header .logo:hover {
   font-size: 1.2rem;
 }
 
+a{
+  text-decoration: none;
+  color: #333;
+  transition: all 0.3s;
+}
+
+a:hover{
+  color: #1abc9c;
+}
 
 .color-picker-block label {
   margin-right: 10px;

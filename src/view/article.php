@@ -5,13 +5,14 @@
     <div class="header">
       <div class="profile">
         <div class="profile-pic"><img src="/uploads/user.png"></div>
-        <span class="username"><?php echo $viewData['article']['username']; ?></span>
+        <a href="/profil?id=<?= $viewData['article']['user_id'] ?>" class="username"><?php echo $viewData['article']['username']; ?></a>
       </div>
     </div>
 
     <div class="post-details">
       <img src="/uploads/<?= $viewData['article']['post_image']; ?>" alt="Publication" class="post-image">
       <h1><?php echo $viewData['article']['title']; ?></h1>
+      <p>Aimé <?= $viewData['likesCount']['count']; ?> fois</p>
       <i class="meta">Publié le <?php echo date("d/m/y à H:i", strtotime($viewData['article']['posted_at'])); ?></i>
       <?= $viewData['article']['content']; ?>
     </div>

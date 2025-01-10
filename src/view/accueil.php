@@ -8,7 +8,7 @@
                 <div class="content">
                     <h2><?= $article['title'] ?></h2>
                     <p><?= substr($article['content'], 0, 150) ?>...</p>
-                    <p>Last update: <?= date('Y-m-d', strtotime($article['created_at'])) ?></p>
+                    <p>Publié le <?= date('d/m/y', strtotime($article['created_at'])) ?></p>
                     <p>Likes : <?= $article['likes'] ?></p>
                     <a href="article?article_id=<?= $article['article_id'] ?>">Lire plus</a>
                 </div>
