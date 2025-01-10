@@ -4,7 +4,7 @@
   <div class="post" id="post-<?php echo $viewData['article']['article_id']; ?>">
     <div class="header">
       <div class="profile">
-        <div class="profile-pic"></div>
+        <div class="profile-pic"><img src="/uploads/user.png"></div>
         <span class="username"><?php echo $viewData['article']['username']; ?></span>
       </div>
     </div>
@@ -19,57 +19,39 @@
     <!-- Boutons d'interaction -->
     <div class="action">
       <?php if (isset($_SESSION['user'])): ?>
-        <button class="like-btn" data-article-id="<?php echo $article['article_id']; ?>">🤍</button>
-        <span class="like-animation">❤</span>
-        <button class="comment-btn">💬</button>
-        <button class="share-btn">🔗</button>
+        <form method="post" class="like-form" id="like-form">
+          <input type="hidden" name="like" value="1">
+          <button type="submit" class="like-btn">🤍</button>
+        </form>
       <?php else: ?>
-        <p><a href="login_reister.php">Inscrivez-vous</a> pour interagir.</p>
+        <p><a href="/register">Inscrivez-vous</a> pour interagir.</p>
       <?php endif; ?>
     </div>
-
+    <div class="commentaires">
     <h2>Commentaires</h2>
+    
+    <?php if (isset($_SESSION['user'])){ ?>
+        <form method="post" class="comment-form" id="comment-form">
+          <input type="hidden" name="comment" value="1">
+          <input type="hidden" name="article_id" value="<?php echo $viewData['article']['article_id']; ?>">
+          <textarea name="content" id="comment-text-<?php echo $viewData['article']['article_id']; ?>" placeholder="Écrire votre commentaire..."></textarea>
+          <button type="submit" class="submit-comment">Publier</button>
+        </form>
+      <?php }else{ ?>
+        <p><a href="/register">Inscrivez-vous</a> pour commenter.</p>
+      <?php } ?>
+
     <div class="comments-section">
       <?php
         foreach ($viewData['comments'] as $comment):
       ?>
       <div class="comment">
-        <span class="comment-author"><?php echo $comment['username']; ?> :</span>
-        <span class="comment-text"><?php echo $comment['content']; ?></span>
-        <?php if (isset($_SESSION['user']) && $comment['user_id'] == $_SESSION['user']): ?>
-          <button class="delete-comment" data-comment-id="<?php echo $comment['comment_id']; ?>">Supprimer</button>
-          <button class="reply-comment" data-comment-id="<?php echo $comment['comment_id']; ?>">Répondre</button>
-        <?php endif; ?>
+        <h3 class="comment-author"><?php echo $comment['username']; ?>:</h3><br>
+        <p class="comment-text"><?php echo $comment['content']; ?></p>
       </div>
       <?php endforeach; ?>
     </div>
-
-    <!-- Formulaire pour ajouter un commentaire -->
-    <div class="comment-box">
-      <?php if (isset($_SESSION['user'])): ?>
-        <textarea id="comment-text-<?php echo $article['article_id']; ?>" placeholder="Écrire votre commentaire..."></textarea>
-        <button class="submit-comment" data-article-id="<?php echo $article['article_id']; ?>">Publier</button>
-      <?php else: ?>
-        <p><a href="login_reister.php">Inscrivez-vous</a> pour commenter.</p>
-      <?php endif; ?>
     </div>
+
   </div>
 </div>
-
-<script>
-  document.addEventListener('click', function (e) {
-    // Like
-    if (e.target.classList.contains('like-btn')) {
-      const articleId = e.target.getAttribute('data-article-id');
-      if (<?= !isset($_SESSION['user']) ?>) {
-        alert('Vous devez être connecté pour aimer un article.');
-        return;
-      }
-
-      const likeButton = e.target;
-      likeButton.classList.toggle('liked');
-      likeButton.textContent = likeButton.classList.contains('liked') ? '❤' : '🤍';
-
-    }
-  });
-</script>

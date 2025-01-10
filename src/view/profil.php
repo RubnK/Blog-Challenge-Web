@@ -1,5 +1,5 @@
 <div class="profile-header">
-    <img src="<?= $viewData['user']['image'] ?>" alt="Photo de profil">
+    <img src="/uploads/user.png" alt="Photo de profil">
     <div class="info">
         <h1><?= $viewData['user']['username'] ?></h1>
         <p>Inscrit le : <?= date('d/m/y', strtotime($viewData['user']['created_at'])) ?></p>

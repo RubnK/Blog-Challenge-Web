@@ -56,7 +56,7 @@ class Post {
 
     function createComment($article_id, $author, $content) {
         $db = new Database();
-        $sql = "INSERT INTO comments (article_id, author, content) VALUES (?, ?, ?)";
+        $sql = "INSERT INTO comments (article_id, user_id, content) VALUES (?, ?, ?)";
         return $db->executeSql($sql, [$article_id, $author, $content]);
     }
 
@@ -78,10 +78,10 @@ class Post {
         return $db->query($sql);
     }
 
-    function likeArticle($id) {
+    function likeArticle($user_id, $article_id) {
         $db = new Database();
-        $sql = "INSERT INTO likes (article_id) VALUES (?)";
-        return $db->executeSql($sql, [$id]);
+        $sql = "INSERT INTO likes (user_id, article_id) VALUES (?, ?)";
+        return $db->executeSql($sql, [$user_id, $article_id]);
     }
 
     function unlikeArticle($id) {

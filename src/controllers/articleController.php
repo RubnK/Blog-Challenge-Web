@@ -9,22 +9,40 @@ use App\Models\Users;
 class ArticleController extends CoreController
 {
     public function article()
-    {
-        if (!isset($_GET['id']) && isset($_SESSION['user']['id'])) {
-            $id = $_SESSION['user']['id'];
-        }
-        else if (isset($_GET['id'])) {
-            $id = $_GET['id'];
-        }
-        else {
-            $this->redirectToRoute('login');
-        }
-        
+    {        
         if(!isset($_GET['article_id'])) {
             $this->redirectToRoute('/');
         }
-        $id = $_GET['article_id'];
         $postModel = new Post();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['comment'])) {
+            $comment = htmlspecialchars($_POST['content']);
+            $author = $_SESSION['user']['id'];
+            $article_id = $_GET['article_id'];
+
+            $postModel->createComment($article_id, $author, $comment);
+        }
+        if (isset($_POST['like'])) {
+
+            $likes = $postModel->getArticleLikes($_GET['article_id']);
+
+            foreach ($likes as $like) {
+                if ($like['user_id'] == $_SESSION['user']['id']) {
+                    ?>
+                    <script>
+                        alert('Vous avez déjà liké cet article');
+                    </script>
+                    <?php
+                    $err = true;
+                }
+            }
+            if (!isset($err)) {
+                $author = $_SESSION['user']['id'];
+                $article_id = $_GET['article_id'];
+
+                $postModel->likeArticle($author, $article_id);
+            }
+        }
+        $id = $_GET['article_id'];
 
         $articleData = $postModel->getArticle($id);
 

@@ -68,3 +68,65 @@ body {
     margin-right: 10px;
     cursor: pointer;
 }
+
+h1 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+    width: 415px;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: #cecece 1px solid;
+    padding: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: -20px;
+}
+
+input {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px;
+    background-color: #34495e;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+button:hover {
+    background-color: #1abc9c;
+}
+
+.toggle-buttons {
+    margin-top: 20px;
+}
+
+.toggle-buttons button {
+    margin: 0 10px;
+}
+
+form a{
+    text-decoration: none;
+    transition: all 0.3s;
+    color: #34495e;
+}
+
+form a:hover{
+    color: #1abc9c;
+}

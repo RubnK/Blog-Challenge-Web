@@ -59,6 +59,11 @@ header .button:hover {
   background-color: #1f1f1f;
 }
 
+h1{
+  text-align: center;
+  margin: 20px 0;
+}
+
 nav {
   display: flex;
   justify-content: center;
@@ -136,17 +141,6 @@ header .logo:hover {
   cursor: pointer;
 }
 
-.comments {
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
-}
-
-.comment {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
 .comment .comment-author {
   font-weight: bold;
 }
@@ -176,14 +170,6 @@ header .logo:hover {
   font-size: 1.2rem;
 }
 
-.color-picker-block {
-  display: none; /* Hidden by default */
-  margin-top: 20px;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  background-color: #f9f9f9;
-}
 
 .color-picker-block label {
   margin-right: 10px;
@@ -354,4 +340,22 @@ header .logo:hover {
   border-radius: 50%;
   display: inline-block;
   margin-right: 10px;
+}
+
+.article{
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.content {
+  padding: 10px;
 }

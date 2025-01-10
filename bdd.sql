@@ -48,3 +48,18 @@ CREATE TABLE likes (
     FOREIGN KEY (article_id) REFERENCES articles(article_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );
+
+INSERT INTO categories (name) VALUES 
+('Technologie'),
+('Science'),
+('Politique'),
+('Economie'),
+('Santé'),
+('Culture'),
+('Cuisine'),
+('Voyage'),
+('Mode'),
+('Beauté'),
+('Famille'),
+('Cinéma'),
+('Musique')

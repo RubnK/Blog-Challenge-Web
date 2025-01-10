@@ -9,9 +9,6 @@ class Category {
     private $name;
     private $created_at;
 
-    public function __construct() {
-    }
-
     function getCategory($id) {
         $db = new Database();
         $sql = "SELECT * FROM categories WHERE category_id = ?";
