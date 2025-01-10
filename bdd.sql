@@ -19,7 +19,7 @@ CREATE TABLE categories (
 -- Create the articles table
 CREATE TABLE articles (
     article_id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES users(user_id),
+    user_id INT NOT NULL,
     title VARCHAR(255) NOT NULL,
     image VARCHAR(255),
     content TEXT NOT NULL,
@@ -33,8 +33,8 @@ CREATE TABLE articles (
 -- Create the comments table
 CREATE TABLE comments (
     comment_id SERIAL PRIMARY KEY,
-    article_id INT REFERENCES articles(article_id),
-    user_id INT REFERENCES users(user_id),
+    article_id INT NOT NULL,
+    user_id INT NOT NULL,
     content TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (article_id) REFERENCES articles(article_id),
@@ -43,9 +43,8 @@ CREATE TABLE comments (
 
 -- Create the likes table
 CREATE TABLE likes (
-    like_id SERIAL PRIMARY KEY,
-    article_id INT REFERENCES articles(article_id),
-    user_id INT REFERENCES users(user_id),
+    article_id INT NOT NULL,
+    user_id INT NOT NULL,
     FOREIGN KEY (article_id) REFERENCES articles(article_id),
     FOREIGN KEY (user_id) REFERENCES users(user_id)
 );

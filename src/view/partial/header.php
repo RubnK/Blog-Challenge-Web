@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Catégories</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <title>BlogEfrei</title>
+    <?php
+    if($_SERVER['REQUEST_URI'] == '/login' || $_SERVER['REQUEST_URI'] == '/register' || $_SERVER['REQUEST_URI'] == '/profil') {
+        echo '<link rel="stylesheet" href="/css/users.css">';
+    }
+    if($_SERVER['REQUEST_URI'] == '/article' || $_SERVER['REQUEST_URI'] == '/post') {
+        echo '<link rel="stylesheet" href="/css/article.css">';
+    }
+    ?>
 </head>
 <body>
     <header>
@@ -11,12 +20,11 @@
         <div class="actions">
             <?php
             if(isset($_SESSION['user'])) {
-                echo '<a href="/post">Publier</a>';
-                echo '<a href="/profil">Profil</a>';
-                echo '<a href="/logout">Se déconnecter</a>';
+                echo '<a href="/post" class="button">Publier</a>';
+                echo '<a href="/profil" class="button">Profil</a>';
             }
             else {
-                echo '<a href="/login">Se connecter</a>';
+                echo '<a href="/login" class="button">Se connecter</a>';
             }
             ?>
         </div>

@@ -14,7 +14,7 @@ class Post {
 
     function getArticle($id) {
         $db = new Database();
-        $sql = "SELECT * FROM articles WHERE article_id = ?";
+        $sql = "SELECT *, articles.created_at AS posted_at, articles.image as post_image FROM articles JOIN users ON articles.user_id = users.user_id WHERE article_id = ?";
         return $db->queryOne($sql, [$id]);
     }
 
@@ -50,7 +50,7 @@ class Post {
 
     function getComments($id) {
         $db = new Database();
-        $sql = "SELECT * FROM comments WHERE article_id = ?";
+        $sql = "SELECT * FROM comments JOIN users ON comments.user_id = users.user_id WHERE article_id = ?";
         return $db->query($sql, [$id]);
     }
 
@@ -68,7 +68,7 @@ class Post {
 
     function getArticleComments($id) {
         $db = new Database();
-        $sql = "SELECT * FROM articles JOIN comments ON articles.article_id = comments.article_id WHERE articles.article_id = ?";
+        $sql = "SELECT *, comments.created_at as posted_at FROM comments JOIN users ON comments.user_id = users.user_id WHERE article_id = ?";
         return $db->query($sql, [$id]);
     }
 

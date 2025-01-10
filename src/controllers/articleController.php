@@ -10,20 +10,30 @@ class ArticleController extends CoreController
 {
     public function article()
     {
+        if (!isset($_GET['id']) && isset($_SESSION['user']['id'])) {
+            $id = $_SESSION['user']['id'];
+        }
+        else if (isset($_GET['id'])) {
+            $id = $_GET['id'];
+        }
+        else {
+            $this->redirectToRoute('login');
+        }
+        
         if(!isset($_GET['article_id'])) {
             $this->redirectToRoute('/');
         }
         $id = $_GET['article_id'];
         $postModel = new Post();
 
-        // Fetch article data from the database based on $id
         $articleData = $postModel->getArticle($id);
 
-        // Fetch comments data from the database based on $id
         $commentsData = $postModel->getComments($id);
 
-        // Pass the article data to the view
-        $this->show('article', ['article' => $articleData, 'comments' => $commentsData]);
+        $likesCount = $postModel->getArticleLikesCount($id);
+
+
+        $this->show('article', ['article' => $articleData, 'comments' => $commentsData, 'likesCount' => $likesCount]);
     }
 
     public function post()
