@@ -20,7 +20,7 @@ class Post {
 
     function getArticlesByCategorie($id) {
         $db = new Database();
-        $sql = "SELECT * FROM articles WHERE categorie_id = ?";
+        $sql = "SELECT * FROM articles WHERE category_id = ?";
         return $db->query($sql, [$id]);
     }
 
