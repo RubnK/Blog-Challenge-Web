@@ -11,9 +11,6 @@ class Users {
     private $role;
     private $created_at;
 
-    public function __construct() {
-    }
-
     function getUser($id) {
         $db = new Database();
         $sql = "SELECT * FROM users WHERE user_id = :id";

@@ -13,7 +13,7 @@
       <img src="/uploads/<?= $viewData['article']['post_image']; ?>" alt="Publication" class="post-image">
       <h1><?php echo $viewData['article']['title']; ?></h1>
       <i class="meta">Publié le <?php echo date("d/m/y à H:i", strtotime($viewData['article']['posted_at'])); ?></i>
-      <p class="content"><?php echo nl2br($viewData['article']['content']); ?></p>
+      <?= $viewData['article']['content']; ?>
     </div>
 
     <!-- Boutons d'interaction -->

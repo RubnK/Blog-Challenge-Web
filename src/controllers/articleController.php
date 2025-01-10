@@ -61,7 +61,7 @@ class ArticleController extends CoreController
         }
         if (isset($_POST['title']) && isset($_POST['content'])) {
             $title = htmlspecialchars($_POST['title']);
-            $content = htmlspecialchars($_POST['content']);
+            $content = $_POST['content'];
             $category = htmlspecialchars($_POST['category']);
             $author = $_SESSION['user']['id'];
             $image = $_FILES['image'];

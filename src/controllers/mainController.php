@@ -15,13 +15,19 @@ class MainController extends CoreController
     {
         $postModel = new Post();
         $posts = $postModel->getAllArticles();
-        foreach ($posts as $key => $post) {
-            $posts[$key]['likes'] = $postModel->getArticleLikesCount($post['article_id'])['count'];
+        $topArticles = $postModel->getTopArticles();
+        $listPosts = [];
+        $i = 0;
+        foreach ($topArticles as $topArticle) {
+            foreach ($posts as $post) {
+                if ($post['article_id'] == $topArticle['article_id']) {
+                    $listPosts[$i] = $post;
+                    $listPosts[$i]['likes'] = $postModel->getArticleLikesCount($post['article_id'])['count'];
+                    $i++;
+                }
+            }
+            
         }
-        usort($posts, function($a, $b) {
-            return $b['likes'] <=> $a['likes'];
-        });
-        $posts = array_slice($posts, 0, 6);
-        $this->show('accueil', ['articles' => $posts]);
+        $this->show('accueil', ['articles' => $listPosts]);
     }    
 }
